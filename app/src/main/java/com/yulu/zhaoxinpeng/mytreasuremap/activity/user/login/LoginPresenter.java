@@ -3,6 +3,8 @@ package com.yulu.zhaoxinpeng.mytreasuremap.activity.user.login;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.yulu.zhaoxinpeng.mytreasuremap.net.NetClient;
+
 import java.io.IOException;
 
 import okhttp3.Call;
@@ -31,8 +33,7 @@ public class LoginPresenter {
      * Activity实现视图接口
      */
     private LoginView mLoginView;
-    private HttpLoggingInterceptor mInterceptor;
-    private OkHttpClient mOkHttpClient;
+
 
     public LoginPresenter(LoginView loginView) {
         this.mLoginView = loginView;
@@ -41,19 +42,7 @@ public class LoginPresenter {
     // 登录的业务
     public void Login() {
 
-        //对OKHTTPClient 设置事件拦截器
-        mInterceptor = new HttpLoggingInterceptor();
-        mInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-
-        mOkHttpClient = new OkHttpClient.Builder().addInterceptor(mInterceptor).build();
-
-        Request request = new Request.Builder().get()
-                .url("http://www.baidu.com")
-                .addHeader("content-type", "html")
-                .addHeader("context-length", "1024")
-                .build();
-
-        mOkHttpClient.newCall(request).enqueue(new Callback() {
+       NetClient.getInstance().getData().enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.e("okhttp","onfailure");
